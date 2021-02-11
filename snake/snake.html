@@ -1,0 +1,69 @@
+<!DOCTYPE html lang="ko">
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <canvas id="board" width="600px" height="600px"></canvas>
+    </body>
+    <script>
+        let canvas, ctx, w, h;
+        let x = 0, y = 0, dx = 0, dy = 0;
+        let snake = [];
+        let time = 0;
+        const n = m = 10;
+        const startGame = () => {
+            canvas = document.querySelector('#board');
+            ctx = canvas.getContext('2d');
+            w = canvas.width, h = canvas.height;
+            document.addEventListener('keydown', keyControl);
+            init();
+            // requestAnimationFrame(game);
+            setInterval(game, 1000 / 30)
+        }
+        const keyControl = ({ keyCode }) => {
+            switch(keyCode) {
+                case 37:
+                    dx = -n, dy = 0;
+                    break;
+                case 38:
+                    dx = 0, dy = -m;
+                    break;
+                case 39:
+                    dx = n, dy = 0;
+                    break;
+                case 40:
+                    dx = 0, dy = m;
+                    break;
+                default:
+                    break;
+            }
+        }
+        const init = () => {
+            x = Math.floor(w / 2);
+            y = Math.floor(h / 2);
+            snake.push([x, y]);
+        }
+        const game = tiemstamp => {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, w, h);
+            ctx.fillStyle = 'lime';
+            const [[hx, hy], ] = snake;
+            if(hx < 0 || hx > w || hy < 0 || hy > h) {
+                return endGame();
+            }
+            snake = snake.map(([a, b]) => {
+                ctx.fillRect(a, b, n, m);
+                return [a + dx, b + dy];
+            });
+            // requestAnimationFrame(game)
+        }
+        const endGame = () => {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, w, h);
+            ctx.fillStyle = 'red';
+            ctx.fillText('Game Over!', Math.floor(w / 2), Math.floor(h / 2));
+        }
+        window.onload = startGame;
+    </script>
+</html>
