@@ -8,7 +8,7 @@
     </body>
     <script>
         let canvas, ctx, w, h;
-        let x = 0, y = 0, dx = 0, dy = 0;
+        let x = 0, y = 0, dx = 0, dy = 0, foodX = 0, foodY = 0;
         let snake = [];
         let time = 0;
         const n = m = 10;
@@ -42,6 +42,7 @@
         const init = () => {
             x = Math.floor(w / 2);
             y = Math.floor(h / 2);
+            genFood();
             snake.push([x, y]);
         }
         const game = tiemstamp => {
@@ -52,11 +53,19 @@
             if(hx < 0 || hx > w || hy < 0 || hy > h) {
                 return endGame();
             }
-            snake = snake.map(([a, b]) => {
-                ctx.fillRect(a, b, n, m);
-                return [a + dx, b + dy];
-            });
+            if(hx === foodX && hy === foodY) {
+                snake = 
+            } else {
+                snake = snake.map(([a, b]) => {
+                    ctx.fillRect(a, b, n, m);
+                    return [a + dx, b + dy];
+                });
+            }
             // requestAnimationFrame(game)
+        }
+        const genFood = () => {
+            foodX = Math.random() * (w / n);
+            foodY = Math.random() * (h / m);
         }
         const endGame = () => {
             ctx.fillStyle = '#000';
